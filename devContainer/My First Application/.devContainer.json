@@ -1,0 +1,11 @@
+{
+  "name": "My New App Workspace",
+  "extensions": [
+    "ms-dynamics-smb.al",
+    "GitHub.copilot",
+    "GitHub.vscode-pull-request-github",
+    "GitHub.vscode-github-actions"
+  ],
+  "workspaceFolder": "/workspaces/MyEnvironmentApps/My First Application/",
+  "postCreateCommand": "code /workspaces/MyEnvironmentApps/My First Application/"
+}
