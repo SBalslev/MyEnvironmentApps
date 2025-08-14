@@ -1,5 +1,7 @@
 {
   "name": "My New App Workspace",
+  "workspaceFolder": "/workspaces/MyEnvironmentApps/My First Application/",
+  "postCreateCommand": "code /workspaces/MyEnvironmentApps/My First Application/",
   "extensions": [
     "ms-dynamics-smb.al",
     "GitHub.copilot",
@@ -10,8 +12,6 @@
     "ms-vscode.yaml",
     "ms-vscode.powershell"
 ],
-"workspaceFolder": "/workspaces/MyEnvironmentApps/My First Application/",
-"postCreateCommand": "code /workspaces/MyEnvironmentApps/My First Application/",
 "settings": {
     "editor.tabSize": 3,
     "editor.insertSpaces": true,
