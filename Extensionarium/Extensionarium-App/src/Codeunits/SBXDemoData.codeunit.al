@@ -8,26 +8,26 @@ codeunit 50311 "SBX Demo Data Mgmt"
         Property: Record "SBX Property";
         Unit: Record "SBX Unit";
         Lease: Record "SBX Lease";
-    ChargeTemplate: Record "SBX Lease Charge Template";
-    ChargeTemplate2: Record "SBX Lease Charge Template";
-    ChargeLine: Record "SBX Recurring Charge Line";
-    ChargeLine2: Record "SBX Recurring Charge Line";
-    SRCategory: Record "SBX Service Request Category";
-    ServiceRequest: Record "SBX Service Request";
-    GLAcc: Record "G/L Account";
-    DepositEntry: Record "SBX Deposit Ledger Entry";
-    Lease2: Record "SBX Lease";
-    SalesHeader: Record "Sales Header";
-    SalesLine: Record "Sales Line";
+        ChargeTemplate: Record "SBX Lease Charge Template";
+        ChargeTemplate2: Record "SBX Lease Charge Template";
+        ChargeLine: Record "SBX Recurring Charge Line";
+        ChargeLine2: Record "SBX Recurring Charge Line";
+        SRCategory: Record "SBX Service Request Category";
+        ServiceRequest: Record "SBX Service Request";
+        GLAcc: Record "G/L Account";
+        DepositEntry: Record "SBX Deposit Ledger Entry";
+        Lease2: Record "SBX Lease";
+        SalesHeader: Record "Sales Header";
+        SalesLine: Record "Sales Line";
         Cust: Record Customer;
         LeaseMgt: Codeunit "SBX Lease Mgt.";
         DimBehavior: Enum "SBX Dimension Behavior"; // for future use
-    CreatedTxt: Text;
+        CreatedTxt: Text;
         Today: Date;
-    i: Integer;
-    PropCode: Code[20];
-    LeaseCode: Code[20];
-    MonthsBack: Integer;
+        i: Integer;
+        PropCode: Code[20];
+        LeaseCode: Code[20];
+        MonthsBack: Integer;
     begin
         Today := WorkDate();
 

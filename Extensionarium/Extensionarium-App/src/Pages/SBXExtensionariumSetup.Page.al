@@ -49,7 +49,7 @@ page 50100 "SBX Extensionarium Setup"
             }
         }
     }
-    
+
     trigger OnOpenPage()
     begin
         if not Rec.Get('SETUP') then begin

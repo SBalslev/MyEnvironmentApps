@@ -93,7 +93,7 @@ page 50151 "SBX Property Mgr Cues"
         // Compute dynamic KPIs
         CalcExpiringLeases();
         CalcAgingServiceRequests();
-    CalcDistinctActiveCustomers();
+        CalcDistinctActiveCustomers();
         Rec.Modify();
         // FlowFields auto-calc on display; modification only stamps time
     end;
@@ -128,7 +128,7 @@ page 50151 "SBX Property Mgr Cues"
     begin
         Lease.SetCurrentKey("Customer No.");
         Lease.SetRange(Status, Lease.Status::Active);
-    if Lease.FindSet(false) then
+        if Lease.FindSet(false) then
             repeat
                 if (Lease."Customer No." <> '') and (Lease."Customer No." <> LastCustomer) then begin
                     CountDistinct += 1;

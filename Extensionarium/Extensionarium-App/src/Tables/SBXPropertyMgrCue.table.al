@@ -45,13 +45,13 @@ table 50020 "SBX Property Mgr Cue"
         field(16; "Unresolved SR"; Integer)
         {
             FieldClass = FlowField;
-            CalcFormula = Count("SBX Service Request" WHERE(Status = FILTER(Open|InProgress)));
+            CalcFormula = Count("SBX Service Request" WHERE(Status = FILTER(Open | InProgress)));
             Caption = 'Unresolved SR';
         }
         field(30; "Last Refreshed"; DateTime) { Caption = 'Last Refreshed'; Editable = false; }
-    field(40; "Expiring Leases (30d)"; Integer) { Caption = 'Leases Expiring 30d'; Editable = false; }
-    field(41; "Open SR >7d"; Integer) { Caption = 'Open SR >7d'; Editable = false; }
-    field(42; "Distinct Active Customers"; Integer) { Caption = 'Active Customers'; Editable = false; }
+        field(40; "Expiring Leases (30d)"; Integer) { Caption = 'Leases Expiring 30d'; Editable = false; }
+        field(41; "Open SR >7d"; Integer) { Caption = 'Open SR >7d'; Editable = false; }
+        field(42; "Distinct Active Customers"; Integer) { Caption = 'Active Customers'; Editable = false; }
     }
 
     keys
