@@ -1,0 +1,9 @@
+{
+  "country": "us",
+  "appFolders": [
+    "Extensionarium/Extensionarium-App"
+  ],
+  "testFolders": [
+    "Extensionarium/Extensionarium.Test"
+  ]
+}
