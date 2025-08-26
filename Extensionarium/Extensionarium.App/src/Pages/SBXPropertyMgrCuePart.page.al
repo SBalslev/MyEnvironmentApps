@@ -43,6 +43,7 @@ page 50151 "SBX Property Mgr Cues"
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Lease List";
+                    ToolTip = 'Number of distinct customers with at least one active lease.';
                 }
             }
             cuegroup(ServiceRequests)

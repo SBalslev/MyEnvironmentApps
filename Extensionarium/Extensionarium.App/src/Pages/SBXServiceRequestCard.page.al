@@ -19,7 +19,7 @@ page 50106 "SBX Service Request Card"
                 field("Property Code"; Rec."Property Code") { ApplicationArea = All; }
                 field("Unit Code"; Rec."Unit Code") { ApplicationArea = All; }
                 field("Lease No."; Rec."Lease No.") { ApplicationArea = All; }
-                field("Customer Name"; Rec."Customer Name") { ApplicationArea = All; Editable = false; }
+                field("Customer Name"; Rec."Customer Name") { ApplicationArea = All; Editable = false; ToolTip = 'Customer name derived from the related lease or customer number.'; }
             }
             group(Details)
             {

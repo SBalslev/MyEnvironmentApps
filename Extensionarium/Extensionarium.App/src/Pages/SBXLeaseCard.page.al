@@ -13,7 +13,7 @@ page 50113 "SBX Lease Card"
             group(General)
             {
                 field("No."; Rec."No.") { ApplicationArea = All; }
-                field("Customer Name"; Rec."Customer Name") { ApplicationArea = All; Editable = false; }
+                field("Customer Name"; Rec."Customer Name") { ApplicationArea = All; Editable = false; ToolTip = 'Name of the customer associated with this lease (read-only).'; }
                 field("Property Code"; Rec."Property Code") { ApplicationArea = All; }
                 field("Unit Code"; Rec."Unit Code") { ApplicationArea = All; }
                 field(Status; Rec.Status) { ApplicationArea = All; }

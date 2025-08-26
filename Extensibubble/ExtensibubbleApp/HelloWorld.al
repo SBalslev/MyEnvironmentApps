@@ -10,6 +10,19 @@ pageextension 50130 CustomerListExt extends "Customer List"
         {
             field("E-Mail"; Rec."E-Mail")
             {
+                ApplicationArea = All;
+                trigger OnValidate()
+                var
+                    MailMgt: Codeunit "Mail Management";
+                    EmailTxt: Text;
+                begin
+                    EmailTxt := Rec."E-Mail";
+                    if EmailTxt = '' then
+                        exit;
+
+                    // Will raise an error itself if invalid (if available in this version)
+                    MailMgt.CheckValidEmailAddress(EmailTxt);
+                end;
             }
         }
     }
