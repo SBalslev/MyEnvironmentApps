@@ -1,10 +1,10 @@
 {
   "folders": [
     {
-      "path": "My First Application"
+      "path": "First/My First Application"
     },
     {
-      "path": ".AL-Go"
+      "path": "First/.AL-Go"
     }
   ],
   "settings": {}
