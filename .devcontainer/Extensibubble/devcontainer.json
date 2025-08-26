@@ -1,5 +1,5 @@
 {
-  "name": "My New App Workspace",
+  "name": "Extensibubble Workspace",
   "workspaceFolder": "/workspaces/MyEnvironmentApps/Extensibubble/",
   "postCreateCommand": "code /workspaces/MyEnvironmentApps/Extensibubble/Extensibubble.code-workspace",
   "extensions": [
