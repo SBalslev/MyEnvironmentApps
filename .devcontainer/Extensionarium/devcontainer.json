@@ -19,7 +19,8 @@
         "ms-azuretools.vscode-docker",
         "ms-vscode.vscode-typescript-next",
         "ms-vscode.yaml",
-        "ms-vscode.powershell"
+        "ms-vscode.powershell",
+        "upstash.context7-mcp"
       ],
       "settings": {
         "editor.tabSize": 3,
