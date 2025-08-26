@@ -2,25 +2,32 @@ codeunit 50302 "SBX Charge Engine"
 {
     procedure GenerateChargesForDate(BillingDate: Date)
     var
+        // Records (AA0021 ordering)
         ChargeLine: Record "SBX Recurring Charge Line";
         ChargeTemplate: Record "SBX Lease Charge Template";
-        DimHelper: Codeunit "SBX Dimension Helper";
-        DimBehavior: Enum "SBX Dimension Behavior";
         Lease: Record "SBX Lease";
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
-        ProrationHlp: Codeunit "SBX Proration Helper";
         Setup: Record "SBX Extensionarium Setup";
+        // Codeunits
+        DimHelper: Codeunit "SBX Dimension Helper";
+        ProrationHlp: Codeunit "SBX Proration Helper";
+        // Enums
+        DimBehavior: Enum "SBX Dimension Behavior";
+        ProrationMethod: Enum "SBX Proration Method";
+        // Primitives / others
         LeaseNo: Code[20];
         CurrentInvoiceCreated: Boolean;
         ProratedAmount: Decimal;
         LineAmount: Decimal;
-        ProrationMethod: Enum "SBX Proration Method";
         PeriodStart: Date;
         PeriodEnd: Date;
         BillStart: Date;
         BillEnd: Date;
+        DateIntervalDaysTok: Label '<%1D>', Comment = '%1 = number of days in generic day interval pattern';
     begin
+        // Initialize variables (AA0205 unassigned variable warnings)
+        LeaseNo := '';
         ChargeLine.SetCurrentKey("Lease No.", "Next Run Date");
         ChargeLine.SetRange("Next Run Date", 0D, BillingDate);
         ChargeLine.SetRange(Blocked, false);
@@ -95,7 +102,7 @@ codeunit 50302 "SBX Charge Engine"
                     if ChargeLine."Frequency Type" = ChargeLine."Frequency Type"::Month then
                         ChargeLine."Next Run Date" := CalcDate('<1M>', ChargeLine."Next Run Date")
                     else
-                        ChargeLine."Next Run Date" := CalcDate(StrSubstNo('<%1D>', 30), ChargeLine."Next Run Date");
+                        ChargeLine."Next Run Date" := CalcDate(StrSubstNo(DateIntervalDaysTok, 30), ChargeLine."Next Run Date");
                     ChargeLine.Modify(true);
 
                     // Update lease invoiced through date to latest period end
@@ -113,7 +120,7 @@ codeunit 50302 "SBX Charge Engine"
     var
         SetupRec: Record "SBX Extensionarium Setup";
     begin
-        if SetupRec.Get() then begin
+        if SetupRec.Get() then
             case ChargeType of
                 ChargeType::BaseRent:
                     if SetupRec."Rent G/L Account" <> '' then
@@ -122,7 +129,6 @@ codeunit 50302 "SBX Charge Engine"
                     if SetupRec."Charge G/L Account" <> '' then
                         exit(SetupRec."Charge G/L Account");
             end;
-        end;
         exit('');
     end;
 }
