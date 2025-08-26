@@ -1,7 +1,7 @@
 {
   "name": "My New App Workspace",
-  "workspaceFolder": "/workspaces/MyEnvironmentApps/My First Application/",
-  "postCreateCommand": "code /workspaces/MyEnvironmentApps/My First Application/",
+  "workspaceFolder": "/workspaces/MyEnvironmentApps/Extensibubble/",
+  "postCreateCommand": "code /workspaces/MyEnvironmentApps/Extensibubble/Extensibubble.code-workspace",
   "extensions": [
     "ms-dynamics-smb.al",
     "GitHub.copilot",
