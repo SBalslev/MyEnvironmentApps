@@ -4,6 +4,9 @@
       "path": "ExtensibubbleApp"
     },
     {
+      "path": "Extensibubble.Test"
+    },
+    {
       "path": ".AL-Go"
     }
   ],
