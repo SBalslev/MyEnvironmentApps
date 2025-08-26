@@ -36,5 +36,10 @@ table 50006 "SBX Deposit Ledger Entry"
     {
         key(PK; "Entry No.") { Clustered = true; }
         key(LeaseIdx; "Lease No.") { }
+        // Added SIFT key for FlowFields (AA0232): supports Sum on Amount filtered by Lease No. and Type
+        key(LeaseTypeIdx; "Lease No.", Type)
+        {
+            SumIndexFields = Amount;
+        }
     }
 }

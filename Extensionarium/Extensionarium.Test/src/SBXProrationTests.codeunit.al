@@ -3,13 +3,15 @@ codeunit 60030 "SBX Proration Tests"
     Subtype = Test;
 
     var
-        Proration: Codeunit "SBX Proration Helper";
-        TestLib: Codeunit "SBX Test Library";
+        // Records
         Lease: Record "SBX Lease";
         ChargeLine: Record "SBX Recurring Charge Line";
-        Template: Record "SBX Lease Charge Template";
-        Engine: Codeunit "SBX Charge Engine";
+        LeaseChargeTemplate: Record "SBX Lease Charge Template";
         Setup: Record "SBX Extensionarium Setup";
+        // Codeunits
+        Proration: Codeunit "SBX Proration Helper";
+        TestLib: Codeunit "SBX Test Library";
+        Engine: Codeunit "SBX Charge Engine";
         Assert: Codeunit "Library Assert";
 
     [Test]
@@ -71,15 +73,15 @@ codeunit 60030 "SBX Proration Tests"
         Setup.Modify(true);
 
         // Template
-        Template.Init();
-        Template.Code := 'PRORATE';
-        Template.Description := 'Prorated Rent';
-        Template."Charge Type" := Template."Charge Type"::BaseRent;
-        Template."Frequency Interval" := 1;
-        Template."Frequency Type" := Template."Frequency Type"::Month;
-        Template.Amount := 3000; // Assume month 30 days => daily 100 for simple check
-        Template."Dimension Behavior" := Template."Dimension Behavior"::PropertyOnly;
-        Template.Insert();
+        LeaseChargeTemplate.Init();
+        LeaseChargeTemplate.Code := 'PRORATE';
+        LeaseChargeTemplate.Description := 'Prorated Rent';
+        LeaseChargeTemplate."Charge Type" := LeaseChargeTemplate."Charge Type"::BaseRent;
+        LeaseChargeTemplate."Frequency Interval" := 1;
+        LeaseChargeTemplate."Frequency Type" := LeaseChargeTemplate."Frequency Type"::Month;
+        LeaseChargeTemplate.Amount := 3000; // Assume month 30 days => daily 100 for simple check
+        LeaseChargeTemplate."Dimension Behavior" := LeaseChargeTemplate."Dimension Behavior"::PropertyOnly;
+        LeaseChargeTemplate.Insert();
 
         // Lease starting mid-month
         TestLib.CreateLease(Lease, 'P-CUST', 'P-PROP', 'P-UNIT', DMY2Date(16, 1, 2025), DMY2Date(31, 12, 2025), 3000);
@@ -89,7 +91,7 @@ codeunit 60030 "SBX Proration Tests"
         // Charge line due end Jan (Next Run Date marks period end) with Prorate First
         ChargeLine.Init();
         ChargeLine."Lease No." := Lease."No.";
-        ChargeLine."Charge Code" := Template.Code;
+        ChargeLine."Charge Code" := LeaseChargeTemplate.Code;
         ChargeLine."Charge Type" := ChargeLine."Charge Type"::BaseRent;
         ChargeLine.Amount := 3000;
         ChargeLine."Frequency Interval" := 1;

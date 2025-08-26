@@ -4,6 +4,7 @@ page 50100 "SBX Extensionarium Setup"
     PageType = Card;
     SourceTable = "SBX Extensionarium Setup";
     UsageCategory = Administration;
+    ApplicationArea = All; // Added for AW0006 searchability
 
     layout
     {
@@ -11,19 +12,19 @@ page 50100 "SBX Extensionarium Setup"
         {
             group(General)
             {
-                field("Property No. Series"; Rec."Property No. Series") { ApplicationArea = All; }
-                field("Unit No. Series"; Rec."Unit No. Series") { ApplicationArea = All; }
-                field("Lease No. Series"; Rec."Lease No. Series") { ApplicationArea = All; }
-                field("Service Req. No. Series"; Rec."Service Req. No. Series") { ApplicationArea = All; }
-                field("Enable Meter"; Rec."Enable Meter") { ApplicationArea = All; }
-                field("Enable Consolidated Invoicing"; Rec."Enable Consolidated Invoicing") { ApplicationArea = All; }
-                field("Unit Shortcut Dimension Code"; Rec."Unit Shortcut Dimension Code") { ApplicationArea = All; }
-                field("Automatic Charge Generation"; Rec."Automatic Charge Generation") { ApplicationArea = All; }
-                field("Default Charge Desc Pattern"; Rec."Default Charge Desc Pattern") { ApplicationArea = All; }
-                field("Default Proration Method"; Rec."Default Proration Method") { ApplicationArea = All; }
-                field("SR Billing Mode"; Rec."SR Billing Mode") { ApplicationArea = All; }
-                field("Rent G/L Account"; Rec."Rent G/L Account") { ApplicationArea = All; }
-                field("Charge G/L Account"; Rec."Charge G/L Account") { ApplicationArea = All; }
+                field("Property No. Series"; Rec."Property No. Series") { ApplicationArea = All; ToolTip = 'No. Series used when creating properties.'; }
+                field("Unit No. Series"; Rec."Unit No. Series") { ApplicationArea = All; ToolTip = 'No. Series used when creating units.'; }
+                field("Lease No. Series"; Rec."Lease No. Series") { ApplicationArea = All; ToolTip = 'No. Series used when creating leases.'; }
+                field("Service Req. No. Series"; Rec."Service Req. No. Series") { ApplicationArea = All; ToolTip = 'No. Series used for service requests.'; }
+                field("Enable Meter"; Rec."Enable Meter") { ApplicationArea = All; ToolTip = 'Specifies if metering-related features are enabled.'; }
+                field("Enable Consolidated Invoicing"; Rec."Enable Consolidated Invoicing") { ApplicationArea = All; ToolTip = 'If enabled, multiple lease charges can be combined on one invoice.'; }
+                field("Unit Shortcut Dimension Code"; Rec."Unit Shortcut Dimension Code") { ApplicationArea = All; ToolTip = 'Shortcut dimension code used for units.'; }
+                field("Automatic Charge Generation"; Rec."Automatic Charge Generation") { ApplicationArea = All; ToolTip = 'Automatically generate recurring charges per schedule.'; }
+                field("Default Charge Desc Pattern"; Rec."Default Charge Desc Pattern") { ApplicationArea = All; ToolTip = 'Pattern used to auto-build charge descriptions.'; }
+                field("Default Proration Method"; Rec."Default Proration Method") { ApplicationArea = All; ToolTip = 'Default method for prorating partial periods.'; }
+                field("SR Billing Mode"; Rec."SR Billing Mode") { ApplicationArea = All; ToolTip = 'Default billing mode for service requests.'; }
+                field("Rent G/L Account"; Rec."Rent G/L Account") { ApplicationArea = All; ToolTip = 'Default G/L account used for base rent charges.'; }
+                field("Charge G/L Account"; Rec."Charge G/L Account") { ApplicationArea = All; ToolTip = 'Default G/L account used for other charges.'; }
             }
         }
     }

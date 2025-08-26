@@ -1,7 +1,6 @@
 codeunit 60051 "Library Assert"
 {
     Subtype = Test;
-    // Local lightweight assertion helpers replacing dependency on standard test library
 
     procedure IsTrue(Condition: Boolean; Message: Text)
     begin

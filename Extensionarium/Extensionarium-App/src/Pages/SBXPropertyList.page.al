@@ -13,10 +13,10 @@ page 50101 "SBX Property List"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Name; Rec.Name) { ApplicationArea = All; }
-                field(Status; Rec.Status) { ApplicationArea = All; }
-                field("Portfolio/Region Code"; Rec."Portfolio/Region Code") { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; ToolTip = 'Unique property code.'; }
+                field(Name; Rec.Name) { ApplicationArea = All; ToolTip = 'Name of the property.'; }
+                field(Status; Rec.Status) { ApplicationArea = All; ToolTip = 'Operational status of the property.'; }
+                field("Portfolio/Region Code"; Rec."Portfolio/Region Code") { ApplicationArea = All; ToolTip = 'Portfolio or region grouping code.'; }
             }
         }
     }

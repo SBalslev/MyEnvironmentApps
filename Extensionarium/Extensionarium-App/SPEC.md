@@ -1,6 +1,6 @@
 # Extensionarium Property & Lease Management Extension
 
-Version: 0.3.3  
+Version: 0.4.2  
 Status: Living Specification (commit to source control)  
 Publisher: SBalslev  
 Object ID Range: 50000–99999 (per app.json)  
@@ -20,6 +20,7 @@ Root Namespace: (Not set – property unsupported in current target). Continue u
 | 0.3.4 | Demo Data Enrichment | Added sample service request, second lease/unit data, default G/L auto-population, additional charge templates |
 | 0.4.0 | Role Center & KPIs | Implemented Property Manager Role Center, cue table/part, KPI fields (Expiring Leases <30d, Open SR >7d), runner codeunits & permissions |
 | 0.4.1 | Customer Name & KPI | Added Customer Name FlowFields to Lease & Service Request; removed Customer No. from cards (show name only); added Active Customers KPI |
+| 0.4.2 | Analyzer Compliance & UX Polish | Enabled PerTenantExtensionCop; resolved AL analyzer warnings (naming AA0215, label comments AA0470/AA0074, temp var prefix AA0073, variable ordering AA0021, unused/ unassigned vars AA0137/AA0205, redundant BEGIN..END AA0005, string labels AA0217); added tooltips & Images to actions/pages; split combined permission sets into individual files; added SIFT key on Deposit Ledger for performance; standardized *Tok/*Msg label naming pattern |
 
 ---
 ## 2. Purpose & Scope
@@ -471,4 +472,40 @@ Addendum (Post 0.4.0): Extend tests to cover demo data idempotency, KPI refresh,
 | Deposit Ledger | Audit trail of deposit movements |
 
 ---
-End of SPEC v0.3
+---
+## 27. Code Quality & Analyzer Compliance (Added in 0.4.2)
+Analyzers Enabled (workspace settings):
+- PerTenantExtensionCop (replaced AppSourceCop for PTE scenario)
+- CodeCop
+- UICop
+
+Key Rules Addressed:
+- Naming & File/Object alignment (AA0215) – all duplicate legacy files removed; each object in its own correctly named file.
+- Labels & Comments (AA0470 / AA0074 / AA0217) – All labels include Comment metadata explaining substitution parameters; format strings suffixed with Tok (patterns) or Msg (messages) for clarity; StrSubstNo sources now label-based.
+- Variable Ordering (AA0021) – Grouped by category (records, codeunits, primitives) for readability.
+- Temporary Variable Prefix (AA0073) – Prefixed with Temp* (e.g., TempDimBuf) for clarity.
+- Redundant BEGIN..END (AA0005) – Removed superfluous blocks inside procedures and triggers.
+- Unused / Unassigned Variables (AA0137 / AA0205) – Removed or initialized appropriately.
+- SIFT / SumIndex Optimization (AA0232 context) – Added key on "SBX Deposit Ledger Entry" (Lease No., Type) with SumIndexFields=Amount to support fast FlowField aggregations.
+
+UI / Accessibility Enhancements:
+- Comprehensive ToolTip coverage for user-facing fields & actions (UICop alignment).
+- Action Images added (Start/Stop/Calculate/Refresh/Create) improving discoverability.
+
+Permission Set Refactor:
+- Original consolidated permission set file replaced with individual permission set object files for each role (SBX_PROPERTY_MGR, SBX_LEASE_ACCOUNTING, SBX_SERVICE_DESK, SBX_VIEWER, SBX_SETUP) improving clarity & diff granularity.
+
+Label Naming Convention:
+- Pattern / token labels: *Tok suffix (e.g., PropCodePatternTok) – indicates StrSubstNo placeholders.
+- User-facing message labels: *Msg suffix.
+- All substitution parameters documented in Comment property (%1 explanation, etc.).
+
+Technical Debt Removed:
+- Duplicate placeholder page/profile/permission set stubs eliminated after renaming for AA0215 compliance.
+- Simplified Dimension Helper logic (replaced CASE with conditional flow; removed unused buffer variables).
+
+Open Quality Items:
+- Introduce automated tests for dimension propagation (currently partial) & demo data idempotency (planned Phase 2 test expansion).
+- Evaluate performance of charge engine at higher scale (benchmark script pending).
+
+End of SPEC v0.4.2

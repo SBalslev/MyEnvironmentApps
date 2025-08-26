@@ -3,21 +3,16 @@ codeunit 60040 "SBX Dim & Term Tests"
     Subtype = Test;
 
     var
-        TestLib: Codeunit "SBX Test Library";
+        // Records
         Lease: Record "SBX Lease";
-        ChargeLine: Record "SBX Recurring Charge Line";
+        // Codeunits
+        TestLib: Codeunit "SBX Test Library";
         LeaseMgt: Codeunit "SBX Lease Mgt.";
-        ChargeTemplate: Record "SBX Lease Charge Template";
-        ChargeEngine: Codeunit "SBX Charge Engine";
-        DimEntry: Record "Dimension Set Entry";
         Assert: Codeunit "Library Assert";
 
     [Test]
     procedure LeaseActivation_AppliesDimensions()
-    var
-        Prop: Record "SBX Property";
     begin
-        // Setup property with dimension set (simulate by assigning existing dimension set ID if available)
         TestLib.EnsureCustomer('10000', 'Test Customer');
         TestLib.EnsureProperty('PROP-DIM', 'Dim Property');
         TestLib.EnsureUnit('PROP-DIM', 'U1');

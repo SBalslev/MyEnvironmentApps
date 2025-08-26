@@ -3,14 +3,16 @@ codeunit 60020 "SBX Charge Engine Tests"
     Subtype = Test;
 
     var
+        // Records first (AA0021 ordering)
         Lease: Record "SBX Lease";
         ChargeLine: Record "SBX Recurring Charge Line";
         LeaseChargeTemplate: Record "SBX Lease Charge Template";
-        ChargeEngine: Codeunit "SBX Charge Engine";
-        TestLib: Codeunit "SBX Test Library";
         SalesInvHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
         Setup: Record "SBX Extensionarium Setup";
+        // Codeunits after records
+        ChargeEngine: Codeunit "SBX Charge Engine";
+        TestLib: Codeunit "SBX Test Library";
         Assert: Codeunit "Library Assert";
 
     [Test]

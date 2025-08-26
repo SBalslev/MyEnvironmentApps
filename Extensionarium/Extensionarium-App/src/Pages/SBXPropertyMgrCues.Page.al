@@ -1,3 +1,4 @@
+// Renamed from SBXPropertyMgrCuePart.page.al to satisfy AA0215
 page 50151 "SBX Property Mgr Cues"
 {
     PageType = CardPart;
@@ -15,16 +16,19 @@ page 50151 "SBX Property Mgr Cues"
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Property List";
+                    ToolTip = 'Number of active properties.';
                 }
                 field("Vacant Units"; Rec."Vacant Units")
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Unit List";
+                    ToolTip = 'Number of units currently vacant.';
                 }
                 field("Expiring Leases (30d)"; Rec."Expiring Leases (30d)")
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Lease List";
+                    ToolTip = 'Active leases ending within the next 30 days.';
                 }
             }
             cuegroup(Leases)
@@ -33,11 +37,13 @@ page 50151 "SBX Property Mgr Cues"
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Lease List";
+                    ToolTip = 'Number of leases with status Active.';
                 }
                 field("Draft Leases"; Rec."Draft Leases")
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Lease List";
+                    ToolTip = 'Number of leases not yet activated.';
                 }
                 field("Distinct Active Customers"; Rec."Distinct Active Customers")
                 {
@@ -52,21 +58,25 @@ page 50151 "SBX Property Mgr Cues"
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Service Request List";
+                    ToolTip = 'Open service requests.';
                 }
                 field("In Progress SR"; Rec."In Progress SR")
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Service Request List";
+                    ToolTip = 'Service requests currently in progress.';
                 }
                 field("Unresolved SR"; Rec."Unresolved SR")
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Service Request List";
+                    ToolTip = 'Open or in-progress service requests not yet resolved.';
                 }
                 field("Open SR >7d"; Rec."Open SR >7d")
                 {
                     ApplicationArea = All;
                     DrillDownPageID = "SBX Service Request List";
+                    ToolTip = 'Open or in-progress service requests older than 7 days.';
                 }
             }
         }
@@ -90,12 +100,10 @@ page 50151 "SBX Property Mgr Cues"
     local procedure RefreshData()
     begin
         Rec."Last Refreshed" := CurrentDateTime;
-        // Compute dynamic KPIs
         CalcExpiringLeases();
         CalcAgingServiceRequests();
         CalcDistinctActiveCustomers();
         Rec.Modify();
-        // FlowFields auto-calc on display; modification only stamps time
     end;
 
     local procedure CalcExpiringLeases()
@@ -126,6 +134,7 @@ page 50151 "SBX Property Mgr Cues"
         LastCustomer: Code[20];
         CountDistinct: Integer;
     begin
+        LastCustomer := '';
         Lease.SetCurrentKey("Customer No.");
         Lease.SetRange(Status, Lease.Status::Active);
         if Lease.FindSet(false) then

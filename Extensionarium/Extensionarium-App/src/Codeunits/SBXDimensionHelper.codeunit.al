@@ -2,12 +2,15 @@ codeunit 50306 "SBX Dimension Helper"
 {
     procedure ApplyDimensionsFromLease(var TargetDimSetID: Integer; LeaseNo: Code[20]; DimBehavior: Enum "SBX Dimension Behavior")
     var
+        // Records (AA0021 ordering)
         Lease: Record "SBX Lease";
         Property: Record "SBX Property";
         Unit: Record "SBX Unit";
+        TempDimBuf: Record "Dimension Set Entry" temporary; // Former DimBuf (AA0073 temp prefix)
+        TempSourceDimBuf: Record "Dimension Set Entry" temporary; // Former SourceDimBuf
+        // Codeunits
         DimMgt: Codeunit DimensionManagement;
-        DimBuf: Record "Dimension Set Entry" temporary;
-        SourceDimBuf: Record "Dimension Set Entry" temporary;
+        // Other
         NewDimSetID: Integer;
     begin
         if not Lease.Get(LeaseNo) then
@@ -15,34 +18,28 @@ codeunit 50306 "SBX Dimension Helper"
 
         // Start from Lease dimension set if present
         if Lease."Dimension Set ID" <> 0 then
-            LoadDimSetIntoBuf(Lease."Dimension Set ID", SourceDimBuf);
+            LoadDimSetIntoBuf(Lease."Dimension Set ID", TempSourceDimBuf);
 
-        case DimBehavior of
-            DimBehavior::None:
-                begin
-                    // do nothing extra
-                end;
-            DimBehavior::PropertyOnly, DimBehavior::PropertyAndUnit:
-                begin
-                    if Property.Get(Lease."Property Code") then
-                        if Property."Dimension Set ID" <> 0 then
-                            MergeDimSetEntries(Property."Dimension Set ID", SourceDimBuf);
-                    if (DimBehavior = DimBehavior::PropertyAndUnit) and (Lease."Unit Code" <> '') then
-                        if Unit.Get(Lease."Property Code", Lease."Unit Code") then
-                            if Unit."Dimension Set ID" <> 0 then
-                                MergeDimSetEntries(Unit."Dimension Set ID", SourceDimBuf);
-                end;
+        // Merge additional dimension sets based on behavior (None = no action)
+        if DimBehavior in [DimBehavior::PropertyOnly, DimBehavior::PropertyAndUnit] then begin
+            if Property.Get(Lease."Property Code") then
+                if Property."Dimension Set ID" <> 0 then
+                    MergeDimSetEntries(Property."Dimension Set ID", TempSourceDimBuf);
+            if (DimBehavior = DimBehavior::PropertyAndUnit) and (Lease."Unit Code" <> '') then
+                if Unit.Get(Lease."Property Code", Lease."Unit Code") then
+                    if Unit."Dimension Set ID" <> 0 then
+                        MergeDimSetEntries(Unit."Dimension Set ID", TempSourceDimBuf);
         end;
 
         // Copy merged entries into DimBuf
-        if SourceDimBuf.FindSet() then
+        if TempSourceDimBuf.FindSet() then
             repeat
-                DimBuf := SourceDimBuf;
-                DimBuf.Insert();
-            until SourceDimBuf.Next() = 0;
+                TempDimBuf := TempSourceDimBuf;
+                TempDimBuf.Insert();
+            until TempSourceDimBuf.Next() = 0;
 
-        if not DimBuf.IsEmpty() then begin
-            NewDimSetID := DimMgt.GetDimensionSetID(DimBuf);
+        if not TempDimBuf.IsEmpty() then begin
+            NewDimSetID := DimMgt.GetDimensionSetID(TempDimBuf);
             if TargetDimSetID <> NewDimSetID then
                 TargetDimSetID := NewDimSetID;
         end;
@@ -78,15 +75,12 @@ codeunit 50306 "SBX Dimension Helper"
 
     local procedure ExistsInBuf(var Buf: Record "Dimension Set Entry" temporary; DimCode: Code[20]; DimValueCode: Code[20]): Boolean
     begin
-        if Buf.FindFirst() then begin
+        if Buf.FindFirst() then
             if Buf.Get(Buf."Dimension Set ID", DimCode, DimValueCode) then; // attempt direct (will fail because key differs) - fallback loop
-        end;
         exit(FindInBuf(Buf, DimCode, DimValueCode));
     end;
 
     local procedure FindInBuf(var Buf: Record "Dimension Set Entry" temporary; DimCode: Code[20]; DimValueCode: Code[20]): Boolean
-    var
-        Tmp: Record "Dimension Set Entry" temporary;
     begin
         if Buf.FindSet() then
             repeat
