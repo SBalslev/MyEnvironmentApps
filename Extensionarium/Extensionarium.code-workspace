@@ -4,6 +4,9 @@
       "path": "Extensionarium.App"
     },
     {
+      "path": "Extensionarium.Test"
+    },
+    {
       "path": ".AL-Go"
     }
   ],
