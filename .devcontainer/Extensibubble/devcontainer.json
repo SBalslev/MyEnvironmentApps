@@ -28,10 +28,9 @@
         "files.insertFinalNewline": true,
         "al.enableCodeAnalysis": true,
         "al.codeAnalyzers": [
-          "CodeCop",
-          "AppSourceCop",
-          "PerTenantExtensionCop",
-          "UICop"
+          "${PerTenantExtensionCop}",
+          "${CodeCop}",
+          "${UICop}"
         ],
         "al.useInteractiveLogin": false,
         "github.copilot.enable": {
