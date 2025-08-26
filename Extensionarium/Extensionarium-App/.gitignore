@@ -1,0 +1,2 @@
+# Ignore build output packages in app folder
+*.app
