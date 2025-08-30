@@ -1,43 +1,54 @@
 {
-  "folders": [
-    {
-      "path": "Extensionarium.App"
-    },
-    {
-      "path": "Extensionarium.Test"
-    },
-    {
-      "path": ".AL-Go"
-    }
-  ],
-  "settings": {
-    "al.enableCodeAnalysis": true,
-    "al.codeAnalyzers": [
-      "CodeCop",
-      "AppSourceCop",
-      "PerTenantExtensionCop",
-      "UICop"
-    ],
-    "launch": {
-      "version": "0.2.0",
-      "configurations": [
-        {
-          "name": "Publish: Microsoft cloud sandbox",
-          "type": "al",
-          "request": "launch",
-          "environmentType": "Sandbox",
-          "environmentName": "PublicTestSandbox",
-          "startupObjectId": 22,
-          "breakOnError": "All",
-          "breakOnRecordWrite": "None",
-          "launchBrowser": true,
-          "enableSqlInformationDebugger": true,
-          "enableLongRunningSqlStatements": true,
-          "longRunningSqlStatementsThreshold": 500,
-          "numberOfSqlStatements": 10
-        }
-      ],
-      "compounds": []
-    }
-  }
+	"folders": [
+		{
+			"path": "ExtensionariumApp"
+		},
+		{
+			"path": "Extensionarium.Test"
+		},
+		{
+			"path": ".AL-Go"
+		}
+	],
+	"settings": {
+		"al.enableCodeAnalysis": true,
+		"al.codeAnalyzers": [
+			"CodeCop",
+			"PerTenantExtensionCop",
+			"UICop"
+		],
+		"al.packageCachePath": [
+			"../.alpackages"
+		],
+		"launch": {
+			"version": "0.2.0",
+			"configurations": [
+				{
+					"name": "Publish: Microsoft cloud sandbox",
+					"type": "al",
+					"request": "launch",
+					"environmentType": "Sandbox",
+					"environmentName": "PublicTestSandbox",
+					"startupObjectId": 22,
+					"breakOnError": "All",
+					"breakOnRecordWrite": "None",
+					"launchBrowser": true,
+					"enableSqlInformationDebugger": true,
+					"enableLongRunningSqlStatements": true,
+					"longRunningSqlStatementsThreshold": 500,
+					"numberOfSqlStatements": 10
+				}
+			],
+			"compounds": []
+		},
+		"mcp": {
+			"servers": {
+				"ms-learn-mcp": {
+					"url": "https://learn.microsoft.com/api/mcp",
+					"type": "http"
+				}
+			},
+			"inputs": []
+		}
+	}
 }

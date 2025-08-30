@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "microsoft.dynamics.businesscentral.development.tools": {
+      "version": "16.0.24.41895-beta",
+      "commands": [
+        "AL"
+      ],
+      "rollForward": true
+    }
+  }
+}
