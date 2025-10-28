@@ -1,5 +1,5 @@
 {
-  "name": "Business Central BC Apps",
+  "name": "Business Central Apps",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "ghcr.io/devcontainers/features/dotnet:2": {
@@ -10,7 +10,7 @@
     "ghcr.io/devcontainers/features/node:1": {}
   },
   "postCreateCommand": "dotnet --version && pwsh -NoLogo -Command '$PSVersionTable';yarn install",
-  "workspaceFolder": "/workspaces/BCApps",
+  "workspaceFolder": "/workspaces/MyEnvironmentApps",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -30,7 +30,7 @@
         "files.insertFinalNewline": true,
         "al.enableCodeAnalysis": true,
         "al.codeAnalyzers": [
-          "${AppSourceCop}",
+          "${PerTenantExtensionCop}",
           "${CodeCop}",
           "${UICop}"
         ],
