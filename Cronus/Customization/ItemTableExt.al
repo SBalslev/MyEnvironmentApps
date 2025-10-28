@@ -6,6 +6,7 @@ tableextension 50130 "Item Certificate Ext" extends Item
         {
             Caption = 'Certificate Information';
             DataClassification = CustomerContent;
+            ToolTip = 'Specifies certificate information for this item.';
         }
     }
 }
