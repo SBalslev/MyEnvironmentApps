@@ -5,7 +5,51 @@
     },
     {
       "path": "Item Certification Test"
+    },
+    {
+      "path": ".alpackages"
     }
   ],
-  "settings": {}
+  "settings": {
+    "al.useInteractiveLogin": false,
+    "al.packageCachePath": [
+      "../.alpackages"
+    ],
+    "launch": {
+      "version": "0.2.0",
+      "configurations": [
+        {
+          "name": "Attach: Sandbox",
+          "type": "al",
+          "request": "attach",
+          "environmentType": "Sandbox",
+          "environmentName": "sbalslev27x1",
+          "breakOnError": "All",
+          "breakOnRecordWrite": "None",
+          "enableSqlInformationDebugger": true,
+          "enableLongRunningSqlStatements": true,
+          "longRunningSqlStatementsThreshold": 500,
+          "numberOfSqlStatements": 10,
+          "breakOnNext": "WebServiceClient"
+        },
+        {
+          "name": "Launch: Sandbox",
+          "type": "al",
+          "request": "launch",
+          "environmentType": "Sandbox",
+          "environmentName": "sbalslev27x1",
+          "startupObjectId": 22,
+          "breakOnError": "All",
+          "breakOnRecordWrite": "None",
+          "launchBrowser": true,
+          "enableSqlInformationDebugger": true,
+          "enableLongRunningSqlStatements": true,
+          "longRunningSqlStatementsThreshold": 500,
+          "numberOfSqlStatements": 10
+        }
+      ],
+      "compounds": []
+    }
+
+  }
 }
