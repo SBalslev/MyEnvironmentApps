@@ -1,9 +1,7 @@
 {
   "country": "us",
   "appFolders": [
-    "Extensionarium/Extensionarium-App"
+    "Cronus/Customization"
   ],
-  "testFolders": [
-    "Extensionarium/Extensionarium.Test"
-  ]
+  "testFolders": []
 }
