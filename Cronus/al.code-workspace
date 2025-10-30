@@ -2,6 +2,12 @@
   "folders": [
     {
       "path": "Customization"
+    },
+    {
+      "path": "Customization.Test"
+    },
+    {
+      "path": ".alpackages"
     }
   ],
   "settings": {
@@ -16,7 +22,7 @@
           "type": "al",
           "request": "launch",
           "environmentType": "Sandbox",
-          "environmentName": "sbalslev27x",
+          "environmentName": "sbalslev28x",
           "startupObjectId": 22,
           "breakOnError": "All",
           "breakOnRecordWrite": "None",

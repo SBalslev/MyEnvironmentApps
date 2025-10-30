@@ -1,6 +1,6 @@
 {
-  "id": "c8d25531-86ed-41e2-9575-80f624922d32",
-  "name": "Cronus Customization",
+  "id": "c8d25531-86ed-41e2-9575-80f624922d33",
+  "name": "Cronus Customization Test",
   "publisher": "Company Publisher",
   "version": "1.0.0.0",
   "brief": "",
@@ -16,8 +16,8 @@
   "application": "26.0.0.0",
   "idRanges": [
     {
-      "from": 50330,
-      "to": 50350
+      "from": 50380,
+      "to": 50399
     }
   ],
   "features": [
