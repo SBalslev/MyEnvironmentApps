@@ -11,7 +11,6 @@ table 50102 "Certificate Suggestion"
         {
             Caption = 'Entry No.';
             DataClassification = SystemMetadata;
-            AutoIncrement = true;
         }
         field(2; "Certificate Code"; Code[20])
         {

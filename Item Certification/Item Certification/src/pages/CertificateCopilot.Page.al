@@ -145,7 +145,7 @@ page 50105 "Certificate Copilot"
 
     local procedure RunGeneration()
     var
-        CertificateSuggestion: Record "Certificate Suggestion";
+        TempCertSuggestion: Record "Certificate Suggestion" temporary;
         AIGenerator: Codeunit "Certificate AI Generator";
         ProgressDialog: Dialog;
     begin
@@ -156,12 +156,12 @@ page 50105 "Certificate Copilot"
 
         ClearSuggestions();
 
-        AIGenerator.GenerateSuggestions(ItemName, ItemDescription, UserInstructions, CertificateSuggestion);
+        AIGenerator.GenerateSuggestions(ItemName, ItemDescription, UserInstructions, TempCertSuggestion);
 
         ProgressDialog.Close();
 
-        if not CertificateSuggestion.IsEmpty() then begin
-            TempCertificateSuggestion.Copy(CertificateSuggestion, true);
+        if not TempCertSuggestion.IsEmpty() then begin
+            TempCertificateSuggestion.Copy(TempCertSuggestion, true);
             SuggestionsVisible := true;
             CurrPage.SuggestionsPart.Page.LoadSuggestions(TempCertificateSuggestion);
         end else

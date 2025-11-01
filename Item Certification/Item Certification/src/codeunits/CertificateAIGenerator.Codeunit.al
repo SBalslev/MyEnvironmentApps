@@ -15,6 +15,8 @@ codeunit 50103 "Certificate AI Generator"
         Prompt: Text;
         ResponseText: Text;
     begin
+        AzureOpenAI.SetCopilotCapability(Enum::"Copilot Capability"::"Suggest Item Certificates");
+
         // Set up authorization (this should be configured in setup)
         SetAuthorization(AzureOpenAI);
 
@@ -116,12 +118,16 @@ codeunit 50103 "Certificate AI Generator"
         JsonToken: JsonToken;
         JsonObject: JsonObject;
         i: Integer;
+        EntryNo: Integer;
         CertificateCode: Text;
         Description: Text;
         CertType: Text;
         Reason: Text;
     begin
+        // Ensure we start with a clean slate
         CertificateSuggestion.Reset();
+        if not CertificateSuggestion.IsTemporary then
+            Error('Certificate Suggestion must be a temporary record');
         CertificateSuggestion.DeleteAll();
 
         // Try to parse as JSON
@@ -130,6 +136,9 @@ codeunit 50103 "Certificate AI Generator"
             CreateFallbackSuggestion(ResponseText, CertificateSuggestion);
             exit;
         end;
+
+        // Initialize entry number counter
+        EntryNo := 1;
 
         // Parse each certificate suggestion from the JSON array
         for i := 0 to JsonArray.Count() - 1 do begin
@@ -143,14 +152,17 @@ codeunit 50103 "Certificate AI Generator"
                 CertType := GetJsonValue(JsonObject, 'type');
                 Reason := GetJsonValue(JsonObject, 'reason');
 
-                // Create the suggestion record
-                CertificateSuggestion.Init();
+                // Create the suggestion record - set Entry No. LAST to avoid it being reset
+                Clear(CertificateSuggestion);
                 CertificateSuggestion."Certificate Code" := CopyStr(CertificateCode, 1, MaxStrLen(CertificateSuggestion."Certificate Code"));
                 CertificateSuggestion."Certificate Description" := CopyStr(Description, 1, MaxStrLen(CertificateSuggestion."Certificate Description"));
                 CertificateSuggestion."Certificate Type" := ParseCertificateType(CertType);
                 CertificateSuggestion.Reason := CopyStr(Reason, 1, MaxStrLen(CertificateSuggestion.Reason));
                 CertificateSuggestion.Selected := true;
-                CertificateSuggestion.Insert();
+                CertificateSuggestion."Entry No." := EntryNo;  // Set Entry No. last
+                if not CertificateSuggestion.Insert(false) then
+                    Error('Failed to insert suggestion with Entry No. %1. Current record Entry No: %2', EntryNo, CertificateSuggestion."Entry No.");
+                EntryNo += 1;
             end;
         end;
     end;
@@ -183,12 +195,14 @@ codeunit 50103 "Certificate AI Generator"
     local procedure CreateFallbackSuggestion(ResponseText: Text; var CertificateSuggestion: Record "Certificate Suggestion")
     begin
         // Create a single suggestion if JSON parsing fails
-        CertificateSuggestion.Init();
+        Clear(CertificateSuggestion);
         CertificateSuggestion."Certificate Code" := 'AI-SUGGEST';
         CertificateSuggestion."Certificate Description" := 'AI Generated Suggestion';
         CertificateSuggestion."Certificate Type" := Enum::"Furniture Certificate Type"::Quality;
         CertificateSuggestion.Reason := CopyStr(ResponseText, 1, MaxStrLen(CertificateSuggestion.Reason));
         CertificateSuggestion.Selected := true;
-        CertificateSuggestion.Insert();
+        CertificateSuggestion."Entry No." := 1;  // Set Entry No. last
+        if not CertificateSuggestion.Insert(false) then
+            Error('Failed to insert fallback suggestion. Entry No: %1', CertificateSuggestion."Entry No.");
     end;
 }
