@@ -2,6 +2,15 @@ namespace org.mycompany.customers.cronus.sales.item.certification;
 
 codeunit 50100 "Furniture Certificate Mgt"
 {
+    var
+        CertValidityCheckTitleLbl: Label 'Certificate Validity Check for Item %1:\\', Comment = '%1 = Item No.';
+        TotalCertificatesLbl: Label 'Total Certificates: %1\\', Comment = '%1 = Total count';
+        ValidCertificatesLbl: Label 'Valid (Active): %1\\', Comment = '%1 = Valid count';
+        ExpiredCertificatesLbl: Label 'Expired: %1\\', Comment = '%1 = Expired certificate codes';
+        PendingCertificatesLbl: Label 'Pending: %1\\', Comment = '%1 = Pending certificate codes';
+        SuspendedCertificatesLbl: Label 'Suspended: %1\\', Comment = '%1 = Suspended certificate codes';
+        NoCertificatesLbl: Label 'No certificates are assigned to item %1.', Comment = '%1 = Item No.';
+
     procedure EvaluateStatus(Certificate: Record "Furniture Certificate"): Enum "Furniture Certificate Status"
     var
         Today: Date;
@@ -112,5 +121,74 @@ codeunit 50100 "Furniture Certificate Mgt"
             FromDateB := FromDateA;
 
         exit((FromDateA <= EffectiveToDateB) and (FromDateB <= EffectiveToDateA));
+    end;
+
+    procedure CheckItemCertificateValidity(ItemNo: Code[20])
+    var
+        Assignment: Record "Furniture Cert. Assignment";
+        Certificate: Record "Furniture Certificate";
+        CertificateStatus: Enum "Furniture Certificate Status";
+        ExpiredCertificates: Text;
+        PendingCertificates: Text;
+        SuspendedCertificates: Text;
+        ValidCertificates: Integer;
+        TotalCertificates: Integer;
+        ResultMessage: Text;
+    begin
+        Assignment.SetRange("Item No.", ItemNo);
+        if not Assignment.FindSet() then begin
+            Message(NoCertificatesLbl, ItemNo);
+            exit;
+        end;
+
+        ValidCertificates := 0;
+        TotalCertificates := 0;
+        ExpiredCertificates := '';
+        PendingCertificates := '';
+        SuspendedCertificates := '';
+
+        repeat
+            TotalCertificates += 1;
+            if Certificate.Get(Assignment."Certificate Code") then begin
+                CertificateStatus := EvaluateStatus(Certificate);
+                case CertificateStatus of
+                    CertificateStatus::Active:
+                        ValidCertificates += 1;
+                    CertificateStatus::Expired:
+                        if ExpiredCertificates = '' then
+                            ExpiredCertificates := Certificate.Code
+                        else
+                            ExpiredCertificates := ExpiredCertificates + ', ' + Certificate.Code;
+                    CertificateStatus::Pending:
+                        if PendingCertificates = '' then
+                            PendingCertificates := Certificate.Code
+                        else
+                            PendingCertificates := PendingCertificates + ', ' + Certificate.Code;
+                    CertificateStatus::Suspended:
+                        if SuspendedCertificates = '' then
+                            SuspendedCertificates := Certificate.Code
+                        else
+                            SuspendedCertificates := SuspendedCertificates + ', ' + Certificate.Code;
+                end;
+            end;
+        until Assignment.Next() = 0;
+
+        ResultMessage := StrSubstNo(CertValidityCheckTitleLbl, ItemNo);
+        ResultMessage := ResultMessage + StrSubstNo(TotalCertificatesLbl, TotalCertificates);
+        ResultMessage := ResultMessage + StrSubstNo(ValidCertificatesLbl, ValidCertificates);
+
+        if ExpiredCertificates <> '' then
+            ResultMessage := ResultMessage + StrSubstNo(ExpiredCertificatesLbl, ExpiredCertificates);
+
+        if PendingCertificates <> '' then
+            ResultMessage := ResultMessage + StrSubstNo(PendingCertificatesLbl, PendingCertificates);
+
+        if SuspendedCertificates <> '' then
+            ResultMessage := ResultMessage + StrSubstNo(SuspendedCertificatesLbl, SuspendedCertificates);
+
+        if (ExpiredCertificates <> '') or (SuspendedCertificates <> '') then
+            Error(ResultMessage)
+        else
+            Message(ResultMessage);
     end;
 }

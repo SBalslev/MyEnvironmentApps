@@ -1,5 +1,7 @@
 namespace org.mycompany.customers.cronus.sales.item.certification;
 
+using Microsoft.Purchases.Document;
+
 permissionset 50102 "Item Certification"
 {
     Assignable = true;
@@ -13,6 +15,9 @@ permissionset 50102 "Item Certification"
         tabledata "Furniture Cert. Assignment" = RMID,
         table "Certificate Suggestion" = X,
         tabledata "Certificate Suggestion" = RMID,
+
+        // Table Extensions
+        tabledata "Purchase Header" = RMID,
 
         // Codeunits
         codeunit "Furniture Certificate Mgt" = X,

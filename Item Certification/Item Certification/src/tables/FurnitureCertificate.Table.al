@@ -55,7 +55,6 @@ table 50100 "Furniture Certificate"
         field(7; Status; Enum "Furniture Certificate Status")
         {
             Caption = 'Status';
-            Editable = false;
             DataClassification = CustomerContent;
         }
         field(8; "External Reference"; Text[50])
