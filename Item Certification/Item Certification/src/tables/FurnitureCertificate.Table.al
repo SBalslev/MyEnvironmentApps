@@ -1,3 +1,5 @@
+namespace org.mycompany.customers.cronus.sales.item.certification;
+
 table 50100 "Furniture Certificate"
 {
     Caption = 'Furniture Certificate';

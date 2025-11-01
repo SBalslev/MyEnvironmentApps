@@ -1,9 +1,12 @@
+namespace org.mycompany.customers.cronus.sales.item.certification;
+
 page 50101 "Furniture Certificate Card"
 {
     PageType = Card;
-    ApplicationArea = All;
+    ApplicationArea = Basic, Suite;
     SourceTable = "Furniture Certificate";
     Caption = 'Furniture Certificate';
+    UsageCategory = Documents;
 
     layout
     {
@@ -15,40 +18,49 @@ page 50101 "Furniture Certificate Card"
 
                 field(Code; Rec."Code")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the unique code for the furniture certificate.';
                 }
                 field(Description; Rec."Description")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the description of the furniture certificate.';
                 }
                 field(CertificateType; Rec."Certificate Type")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the type of the furniture certificate.';
                 }
                 field(IssuingAuthority; Rec."Issuing Authority")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the authority that issued the certificate.';
                 }
                 field(ValidFrom; Rec."Valid From")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the date from which the certificate is valid.';
                 }
                 field(ValidTo; Rec."Valid To")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the date until which the certificate is valid.';
                 }
                 field(Status; Rec.Status)
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the current status of the certificate.';
                 }
                 field(ExternalReference; Rec."External Reference")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies an external reference for the certificate.';
                 }
                 field(Notes; Rec.Notes)
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
                     MultiLine = true;
+                    ToolTip = 'Specifies additional notes about the certificate.';
                 }
             }
         }
@@ -56,7 +68,7 @@ page 50101 "Furniture Certificate Card"
         {
             part(Assignments; "Certificate Item Assignments")
             {
-                ApplicationArea = All;
+                ApplicationArea = Basic, Suite;
                 SubPageLink = "Certificate Code" = FIELD("Code");
             }
         }
@@ -68,9 +80,10 @@ page 50101 "Furniture Certificate Card"
         {
             action(RecalculateStatus)
             {
-                ApplicationArea = All;
+                ApplicationArea = Basic, Suite;
                 Caption = 'Recalculate Status';
                 Image = Recalculate;
+                ToolTip = 'Recalculates the status of the certificate based on validity dates.';
 
                 trigger OnAction()
                 var

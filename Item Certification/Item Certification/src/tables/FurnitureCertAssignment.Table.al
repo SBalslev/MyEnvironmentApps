@@ -1,3 +1,7 @@
+namespace org.mycompany.customers.cronus.sales.item.certification;
+
+using Microsoft.Inventory.Item;
+
 table 50101 "Furniture Cert. Assignment"
 {
     Caption = 'Furniture Certificate Assignment';

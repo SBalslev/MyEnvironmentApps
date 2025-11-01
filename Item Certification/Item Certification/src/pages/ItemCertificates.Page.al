@@ -1,11 +1,12 @@
-page 50103 "Item Certificate Assignments"
+namespace org.mycompany.customers.cronus.sales.item.certification;
+
+page 50104 "Item Certificates"
 {
-    PageType = ListPart;
-    ApplicationArea = All;
+    PageType = List;
+    ApplicationArea = Basic, Suite;
     SourceTable = "Furniture Cert. Assignment";
     Caption = 'Item Certificates';
-    DelayedInsert = true;
-    Editable = true;
+    UsageCategory = Lists;
 
     layout
     {
@@ -13,32 +14,44 @@ page 50103 "Item Certificate Assignments"
         {
             repeater(Group)
             {
+                field(ItemNo; Rec."Item No.")
+                {
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the item number for this certificate assignment.';
+                }
                 field(CertificateCode; Rec."Certificate Code")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the certificate code assigned to the item.';
                 }
-                field(Description; GetCertificateDescription())
+                field(CertificateDescription; GetCertificateDescription())
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Certificate Description';
                     Editable = false;
+                    ToolTip = 'Specifies the description of the assigned certificate.';
                 }
-                field(Type; Rec."Certificate Type")
+                field(CertificateType; Rec."Certificate Type")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
                     Editable = false;
+                    ToolTip = 'Specifies the type of the assigned certificate.';
                 }
                 field(ValidFrom; Rec."Valid From")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the date from which the certificate assignment is valid.';
                 }
                 field(ValidTo; Rec."Valid To")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the date until which the certificate assignment is valid.';
                 }
                 field(Status; Rec."Assignment Status")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = Basic, Suite;
                     Editable = false;
+                    ToolTip = 'Specifies the status of the certificate assignment.';
                 }
             }
         }
@@ -50,9 +63,10 @@ page 50103 "Item Certificate Assignments"
         {
             action(OpenCertificate)
             {
-                ApplicationArea = All;
+                ApplicationArea = Basic, Suite;
                 Caption = 'Open Certificate';
                 Image = Document;
+                ToolTip = 'Opens the certificate card for the selected certificate.';
 
                 trigger OnAction()
                 var

@@ -1,3 +1,7 @@
+namespace org.mycompany.customers.cronus.sales.item.certification;
+
+using Microsoft.Inventory.Item;
+
 pageextension 50101 "Item List Certificate Ext" extends "Item List"
 {
     actions
@@ -6,9 +10,10 @@ pageextension 50101 "Item List Certificate Ext" extends "Item List"
         {
             action(ViewCertificates)
             {
-                ApplicationArea = All;
+                ApplicationArea = Basic, Suite;
                 Caption = 'View Certificates';
                 Image = List;
+                ToolTip = 'View the certificates assigned to the selected item.';
 
                 trigger OnAction()
                 var

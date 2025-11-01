@@ -2,7 +2,7 @@
   "id": "0472bf3c-f0fb-4a6c-a3f5-fb8cf6790130",
   "name": "Item Certification Test",
   "publisher": "Company Publisher",
-  "version": "1.0.0.0",
+  "version": "1.1.0.0",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -10,7 +10,14 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [],
+  "dependencies": [
+    {
+      "id": "0472bf3c-f0fb-4a6c-a3f5-fb8cf6790129",
+      "name": "Item Certification",
+      "publisher": "Company Publisher",
+      "version": "1.1.0.0"
+    }
+  ],
   "screenshots": [],
   "platform": "1.0.0.0",
   "application": "27.0.0.0",

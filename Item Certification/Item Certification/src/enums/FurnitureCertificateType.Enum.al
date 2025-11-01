@@ -1,3 +1,5 @@
+namespace org.mycompany.customers.cronus.sales.item.certification;
+
 enum 50101 "Furniture Certificate Type"
 {
     Extensible = true;

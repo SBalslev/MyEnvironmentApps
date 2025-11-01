@@ -1,10 +1,12 @@
+namespace org.mycompany.customers.cronus.sales.item.certification;
+
 codeunit 50100 "Furniture Certificate Mgt"
 {
     procedure EvaluateStatus(Certificate: Record "Furniture Certificate"): Enum "Furniture Certificate Status"
     var
         Today: Date;
     begin
-        Today := WorkDate;
+        Today := WorkDate();
 
         if Certificate.Status = Certificate.Status::Suspended then
             exit(Certificate.Status::Suspended);
