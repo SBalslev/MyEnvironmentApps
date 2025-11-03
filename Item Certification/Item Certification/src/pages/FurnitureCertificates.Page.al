@@ -7,6 +7,7 @@ page 50100 "Furniture Certificates"
     SourceTable = "Furniture Certificate";
     Caption = 'Furniture Certificates';
     UsageCategory = Lists;
+    CardPageId = "Furniture Certificate Card";
 
     layout
     {
@@ -61,6 +62,7 @@ page 50100 "Furniture Certificates"
             {
                 ApplicationArea = Basic, Suite;
                 RunObject = Page "Furniture Certificate Card";
+                RunPageLink = "Code" = field("Code");
                 RunPageMode = Edit;
                 ToolTip = 'Opens the certificate card for the selected certificate.';
                 Image = Card;
