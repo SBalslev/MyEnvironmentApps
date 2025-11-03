@@ -67,6 +67,13 @@ table 50101 "Furniture Cert. Assignment"
             Editable = false;
             DataClassification = CustomerContent;
         }
+        field(12; "Item Description"; Text[100])
+        {
+            Caption = 'Item Description';
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = Lookup(Item.Description WHERE("No." = FIELD("Item No.")));
+        }
     }
 
     keys

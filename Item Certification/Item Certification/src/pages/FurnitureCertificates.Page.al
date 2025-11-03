@@ -61,7 +61,8 @@ page 50100 "Furniture Certificates"
             {
                 ApplicationArea = Basic, Suite;
                 RunObject = Page "Furniture Certificate Card";
-                RunPageMode = Edit;
+                RunPageLink = Code = FIELD(Code);
+                RunPageMode = View;
                 ToolTip = 'Opens the certificate card for the selected certificate.';
                 Image = Card;
             }

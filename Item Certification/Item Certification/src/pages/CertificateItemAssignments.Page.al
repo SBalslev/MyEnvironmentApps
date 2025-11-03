@@ -18,6 +18,11 @@ page 50102 "Certificate Item Assignments"
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the item number assigned to this certificate.';
                 }
+                field(ItemDescription; Rec."Item Description")
+                {
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the description of the item.';
+                }
                 field(ValidFrom; Rec."Valid From")
                 {
                     ApplicationArea = Basic, Suite;
