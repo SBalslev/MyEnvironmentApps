@@ -19,6 +19,14 @@ page 50103 "Item Certificate Assignments"
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the certificate code assigned to the item.';
+
+                    trigger OnDrillDown()
+                    var
+                        Certificate: Record "Furniture Certificate";
+                    begin
+                        if GetCertificate(Certificate) then
+                            Page.Run(Page::"Furniture Certificate Card", Certificate);
+                    end;
                 }
                 field(Description; GetCertificateDescription())
                 {
