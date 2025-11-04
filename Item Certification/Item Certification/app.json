@@ -1,0 +1,35 @@
+{
+  "id": "0472bf3c-f0fb-4a6c-a3f5-fb8cf6790129",
+  "name": "Item Certification",
+  "publisher": "Company Publisher",
+  "version": "1.2.2.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "27.0.0.0",
+  "idRanges": [
+    {
+      "from": 50100,
+      "to": 50149
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "17.0",
+  "features": [
+    "NoImplicitWith"
+  ],
+  "resourceFolders": [
+    "resources"
+  ]
+}
