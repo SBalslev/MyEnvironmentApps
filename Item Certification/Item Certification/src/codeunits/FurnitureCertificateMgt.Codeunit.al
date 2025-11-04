@@ -1,0 +1,194 @@
+namespace org.mycompany.customers.cronus.sales.item.certification;
+
+codeunit 50100 "Furniture Certificate Mgt"
+{
+    var
+        CertValidityCheckTitleLbl: Label 'Certificate Validity Check for Item %1:\\', Comment = '%1 = Item No.';
+        TotalCertificatesLbl: Label 'Total Certificates: %1\\', Comment = '%1 = Total count';
+        ValidCertificatesLbl: Label 'Valid (Active): %1\\', Comment = '%1 = Valid count';
+        ExpiredCertificatesLbl: Label 'Expired: %1\\', Comment = '%1 = Expired certificate codes';
+        PendingCertificatesLbl: Label 'Pending: %1\\', Comment = '%1 = Pending certificate codes';
+        SuspendedCertificatesLbl: Label 'Suspended: %1\\', Comment = '%1 = Suspended certificate codes';
+        NoCertificatesLbl: Label 'No certificates are assigned to item %1.', Comment = '%1 = Item No.';
+
+    procedure EvaluateStatus(Certificate: Record "Furniture Certificate"): Enum "Furniture Certificate Status"
+    var
+        Today: Date;
+    begin
+        Today := WorkDate();
+
+        if Certificate.Status = Certificate.Status::Suspended then
+            exit(Certificate.Status::Suspended);
+
+        if (Certificate."Valid From" = 0D) and (Certificate."Valid To" = 0D) then
+            exit(Certificate.Status::Active);
+
+        if (Certificate."Valid From" <> 0D) and (Today < Certificate."Valid From") then
+            exit(Certificate.Status::Pending);
+
+        if (Certificate."Valid To" <> 0D) and (Today > Certificate."Valid To") then
+            exit(Certificate.Status::Expired);
+
+        exit(Certificate.Status::Active);
+    end;
+
+    procedure InitialiseAssignmentDates(var Assignment: Record "Furniture Cert. Assignment")
+    var
+        Certificate: Record "Furniture Certificate";
+    begin
+        if not Certificate.Get(Assignment."Certificate Code") then
+            Error('Certificate %1 is missing.', Assignment."Certificate Code");
+
+        if Assignment."Valid From" = 0D then
+            Assignment."Valid From" := Certificate."Valid From";
+
+        if Assignment."Valid To" = 0D then
+            Assignment."Valid To" := Certificate."Valid To";
+    end;
+
+    procedure ValidateAssignment(var Assignment: Record "Furniture Cert. Assignment")
+    var
+        Certificate: Record "Furniture Certificate";
+        OtherAssignment: Record "Furniture Cert. Assignment";
+        CertificateStatus: Enum "Furniture Certificate Status";
+    begin
+        if not Certificate.Get(Assignment."Certificate Code") then
+            Error('Certificate %1 does not exist.', Assignment."Certificate Code");
+
+        CertificateStatus := EvaluateStatus(Certificate);
+        if CertificateStatus = CertificateStatus::Expired then
+            Error('Certificate %1 is expired and cannot be assigned.', Assignment."Certificate Code");
+
+        if (Certificate."Valid From" <> 0D) and (Assignment."Valid From" <> 0D) and (Assignment."Valid From" < Certificate."Valid From") then
+            Error('Assignment start date %1 cannot precede certificate start date %2.', Assignment."Valid From", Certificate."Valid From");
+
+        if (Certificate."Valid To" <> 0D) and (Assignment."Valid To" <> 0D) and (Assignment."Valid To" > Certificate."Valid To") then
+            Error('Assignment end date %1 cannot exceed certificate end date %2.', Assignment."Valid To", Certificate."Valid To");
+
+        if (Assignment."Valid From" <> 0D) and (Assignment."Valid To" <> 0D) and (Assignment."Valid From" > Assignment."Valid To") then
+            Error('Assignment end date must fall on or after the start date.');
+
+        OtherAssignment.Reset();
+        OtherAssignment.SetCurrentKey("Item No.", "Valid From");
+        OtherAssignment.SetRange("Item No.", Assignment."Item No.");
+        OtherAssignment.SetFilter("Certificate Code", '<>%1', Assignment."Certificate Code");
+
+        if OtherAssignment.FindSet() then
+            repeat
+                ValidateNoOverlap(Assignment, OtherAssignment, Certificate."Certificate Type");
+            until OtherAssignment.Next() = 0;
+    end;
+
+    local procedure ValidateNoOverlap(Assignment: Record "Furniture Cert. Assignment"; OtherAssignment: Record "Furniture Cert. Assignment"; CertificateType: Enum "Furniture Certificate Type")
+    var
+        OtherCertificate: Record "Furniture Certificate";
+    begin
+        if not OtherCertificate.Get(OtherAssignment."Certificate Code") then
+            exit;
+
+        if OtherCertificate."Certificate Type" <> CertificateType then
+            exit;
+
+        if DateRangesOverlap(Assignment."Valid From", Assignment."Valid To", OtherAssignment."Valid From", OtherAssignment."Valid To") then
+            Error(
+              'Item %1 already has certificate %2 of type %3 covering overlapping dates (%4 - %5).',
+              Assignment."Item No.",
+              OtherAssignment."Certificate Code",
+              CertificateType,
+              OtherAssignment."Valid From",
+              OtherAssignment."Valid To");
+    end;
+
+    local procedure DateRangesOverlap(FromDateA: Date; ToDateA: Date; FromDateB: Date; ToDateB: Date): Boolean
+    var
+        EffectiveToDateA: Date;
+        EffectiveToDateB: Date;
+    begin
+        EffectiveToDateA := ToDateA;
+        if EffectiveToDateA = 0D then
+            EffectiveToDateA := DMY2DATE(31, 12, 9999);
+
+        EffectiveToDateB := ToDateB;
+        if EffectiveToDateB = 0D then
+            EffectiveToDateB := DMY2DATE(31, 12, 9999);
+
+        if (FromDateA = 0D) and (FromDateB = 0D) then
+            exit(true);
+
+        if FromDateA = 0D then
+            FromDateA := FromDateB;
+        if FromDateB = 0D then
+            FromDateB := FromDateA;
+
+        exit((FromDateA <= EffectiveToDateB) and (FromDateB <= EffectiveToDateA));
+    end;
+
+    procedure CheckItemCertificateValidity(ItemNo: Code[20])
+    var
+        Assignment: Record "Furniture Cert. Assignment";
+        Certificate: Record "Furniture Certificate";
+        CertificateStatus: Enum "Furniture Certificate Status";
+        ExpiredCertificates: Text;
+        PendingCertificates: Text;
+        SuspendedCertificates: Text;
+        ValidCertificates: Integer;
+        TotalCertificates: Integer;
+        ResultMessage: Text;
+    begin
+        Assignment.SetRange("Item No.", ItemNo);
+        if not Assignment.FindSet() then begin
+            Message(NoCertificatesLbl, ItemNo);
+            exit;
+        end;
+
+        ValidCertificates := 0;
+        TotalCertificates := 0;
+        ExpiredCertificates := '';
+        PendingCertificates := '';
+        SuspendedCertificates := '';
+
+        repeat
+            TotalCertificates += 1;
+            if Certificate.Get(Assignment."Certificate Code") then begin
+                CertificateStatus := EvaluateStatus(Certificate);
+                case CertificateStatus of
+                    CertificateStatus::Active:
+                        ValidCertificates += 1;
+                    CertificateStatus::Expired:
+                        if ExpiredCertificates = '' then
+                            ExpiredCertificates := Certificate.Code
+                        else
+                            ExpiredCertificates := ExpiredCertificates + ', ' + Certificate.Code;
+                    CertificateStatus::Pending:
+                        if PendingCertificates = '' then
+                            PendingCertificates := Certificate.Code
+                        else
+                            PendingCertificates := PendingCertificates + ', ' + Certificate.Code;
+                    CertificateStatus::Suspended:
+                        if SuspendedCertificates = '' then
+                            SuspendedCertificates := Certificate.Code
+                        else
+                            SuspendedCertificates := SuspendedCertificates + ', ' + Certificate.Code;
+                end;
+            end;
+        until Assignment.Next() = 0;
+
+        ResultMessage := StrSubstNo(CertValidityCheckTitleLbl, ItemNo);
+        ResultMessage := ResultMessage + StrSubstNo(TotalCertificatesLbl, TotalCertificates);
+        ResultMessage := ResultMessage + StrSubstNo(ValidCertificatesLbl, ValidCertificates);
+
+        if ExpiredCertificates <> '' then
+            ResultMessage := ResultMessage + StrSubstNo(ExpiredCertificatesLbl, ExpiredCertificates);
+
+        if PendingCertificates <> '' then
+            ResultMessage := ResultMessage + StrSubstNo(PendingCertificatesLbl, PendingCertificates);
+
+        if SuspendedCertificates <> '' then
+            ResultMessage := ResultMessage + StrSubstNo(SuspendedCertificatesLbl, SuspendedCertificates);
+
+        if (ExpiredCertificates <> '') or (SuspendedCertificates <> '') then
+            Error(ResultMessage)
+        else
+            Message(ResultMessage);
+    end;
+}

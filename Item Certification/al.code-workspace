@@ -1,0 +1,59 @@
+{
+  "folders": [
+    {
+      "path": "Item Certification"
+    },
+    {
+      "path": "Item Certification Test"
+    },
+    {
+      "path": ".alpackages"
+    },
+    {
+      "path": "../.github"
+    }
+  ],
+  "settings": {
+    "al.useInteractiveLogin": false,
+    "al.packageCachePath": [
+      "../.alpackages"
+    ],
+    "launch": {
+      "version": "0.2.0",
+      "configurations": [
+        {
+          "name": "Attach: Sandbox",
+          "type": "al",
+          "request": "attach",
+          "environmentType": "Sandbox",
+          "environmentName": "sbalslev28x",
+          "breakOnError": "All",
+          "breakOnRecordWrite": "None",
+          "enableSqlInformationDebugger": true,
+          "enableLongRunningSqlStatements": true,
+          "longRunningSqlStatementsThreshold": 500,
+          "numberOfSqlStatements": 10,
+          "breakOnNext": "WebClient"
+        },
+        {
+          "name": "Launch: Sandbox",
+          "type": "al",
+          "request": "launch",
+          "environmentType": "Sandbox",
+          "environmentName": "sbalslev28x",
+          "startupObjectId": 22,
+          "breakOnError": "All",
+          "breakOnRecordWrite": "None",
+          "launchBrowser": true,
+          "enableSqlInformationDebugger": true,
+          "enableLongRunningSqlStatements": true,
+          "longRunningSqlStatementsThreshold": 500,
+          "numberOfSqlStatements": 10,
+          "schemaUpdateMode": "ForceSync"
+        }
+      ],
+      "compounds": []
+    }
+
+  }
+}
